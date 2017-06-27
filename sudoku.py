@@ -1,60 +1,46 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 import numpy as np
 import copy
 
-"""
-	Sudoku 
-	Brute force recursion depth first 
-"""
+'''
+	The Telegraph
+
+	World's hardest sudoku
+ 
+	http://www.telegraph.co.uk/news/science/science-news/9359579/Worlds-hardest-sudoku-can-you-crack-it.html
+'''
 
 def search (a_):
 
-    a = copy.deepcopy(a_)
+	a = copy.deepcopy(a_)
+	
+	for y in xrange(9):
+		for x  in xrange(9):
+			if a[y,x] == 0:
+				r = range(1,10)
+				r = [ i for i in r if i not in a[y:y+1] ]
+				r = [ i for i in r if i not in a[:,x] ]
+				r = [ i for i in r if i not in a[(y//3)*3:(y//3+1)*3,(x//3)*3:(x//3+1)*3] ]
+				
+				for n in r:
+					a[y,x] = n
+					search(a)
+				return
+	print (a)
 
-    seq = [1,2,3,4,5,6,7,8,9]
 
-    for y in xrange(9):
-        for x  in xrange(9):
-            if a[y,x] == 0:
-                for n in xrange(1, 10):
-                    if (n in a[y:y+1] or n in a[:,x]):
-			continue
-                    a[y,x] = n
-                    search(a)
-                return
-
-    if (all((np.sort(a[0:3,0:3].reshape(1,9)) == seq)[0]) and
-	all((np.sort(a[0:3,3:6].reshape(1,9)) == seq)[0]) and
-	all((np.sort(a[0:3,6:9].reshape(1,9)) == seq)[0]) and
-	all((np.sort(a[3:6,0:3].reshape(1,9)) == seq)[0]) and
-	all((np.sort(a[3:6,0:3].reshape(1,9)) == seq)[0]) and
-	all((np.sort(a[3:6,0:3].reshape(1,9)) == seq)[0]) and
-	all((np.sort(a[6:9,0:3].reshape(1,9)) == seq)[0]) and
-	all((np.sort(a[6:9,3:6].reshape(1,9)) == seq)[0]) and
-	all((np.sort(a[6:9,6:9].reshape(1,9)) == seq)[0])):
-	print(a)
-"""
-a= np.array((
-	(5,6,0,0,9,3,0,0,0),
-	(0,4,0,8,7,2,3,0,0),
-	(3,0,0,0,4,0,0,2,0),
-	(0,8,0,0,0,9,0,5,6),
-	(0,5,6,7,2,0,4,0,0),
-	(0,0,9,0,3,6,0,0,0),
-	(0,1,0,0,0,0,8,0,9),
-	(0,0,0,0,0,0,0,0,0),
-	(8,0,0,0,0,0,0,0,7)))
-"""
-
-a= np.array((
-	(0,0,1,0,8,2,6,9,5),
-	(0,0,5,3,6,7,0,0,1),
-	(0,0,0,1,9,5,0,4,0),
-	(0,5,0,0,0,0,0,0,3),
-	(0,0,8,2,0,4,0,5,6),
-	(0,0,2,9,0,0,1,8,0),
-	(2,0,0,0,0,0,5,0,0),
-	(0,0,3,0,0,9,0,6,0),
-	(0,0,9,0,0,6,0,0,0)))
+a = np.array((
+	(8,0,0,0,0,0,0,0,0),
+	(0,0,3,6,0,0,0,0,0),
+	(0,7,0,0,9,0,2,0,0),
+	(0,5,0,0,0,7,0,0,0),
+	(0,0,0,0,4,5,7,0,0),
+	(0,0,0,1,0,0,0,3,0),
+	(0,0,1,0,0,0,0,6,8),
+	(0,0,8,5,0,0,0,1,0),
+	(0,9,0,0,0,0,4,0,0)))
 print(a)
 print ("----")
 
